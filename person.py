@@ -45,7 +45,9 @@ class Person(object):
         pass
 
     def is_infected():
-        pass
+        for interactions.range(99):
+            if not self.vaccinated and not self.infected:
+                self.infected = True
 
     def survived():
         if infected(self.person) and is_alive(self.person) == True:
