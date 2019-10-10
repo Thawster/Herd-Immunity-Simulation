@@ -36,7 +36,7 @@ class Simulation(object):
         # TODO: Store each newly infected person's ID in newly_infected attribute.
         # At the end of each time step, call self._infect_newly_infected()
         # and then reset .newly_infected back to an empty list.
-        self.logger = Logger()
+        self.logger = Logger(self.file_name)
         self.population = [] # List of Person objects
         self.pop_size = pop_size # Int
         self.next_person_id = 0 # Int
@@ -68,17 +68,18 @@ class Simulation(object):
 
         # Use the attributes created in the init method to create a population that has
         # the correct intial vaccination percentage and initial infected.
-        count = 0
-        while count < pop_size:
-            Person(_id, is_vaccinated, infection=None)
-            _id = ("person"+count)
-
-            if count < pop_size * vacc_percentage:
-                self.Person.is_vaccinated = True
+        infected = 0
+        while len(self.population) != self.pop_size: #while the population size is less than number of person objects
+            if infected != self.initial_infected: #if the number of people infected is less than the number of initial_infected
+                self.population.append(Person(self.next_person_id, False, self.virus)) #add a person object to the population who is unvaccinated
+                infected += 1
+                self.next_person_id += 1
+            elif random.random() < self.vacc_percentage: #if the random float is less than the percentage of person objects who are vaccinated
+                self.population.append(Person(self.next_person_id, True, None))#add a person object who is vaccinated
+                self.next_person_id += 1
             else:
-                self.Person.is_vaccinated = False
-            count += 1
-        pass
+                self.population.append(Person(self.next_person_id, False, None))#else add a person object who is unvaccinated
+                self.next_person_id += 1
 
     def _simulation_should_continue(self):
         ''' The simulation should only end if the entire population is dead
@@ -108,7 +109,7 @@ class Simulation(object):
         # TODO: for every iteration of this loop, call self.time_step() to compute another
         # round of this simulation.
 
-        print('The simulation has ended after {time_step_counter} turns.'.format(time_step_counter))
+            print('The simulation has ended after {time_step_counter} turns.'.format(time_step_counter))
         pass
 
     def time_step(self):
