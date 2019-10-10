@@ -65,7 +65,10 @@ def test_not_vacc_person_instantiation():
     person = Person(2, False)
     # TODO: complete your own assert statements that test
     # the values at each attribute
-    # assert ...
+    assert person._id == 2
+    assert person.is_alive is True
+    assert person.is_vaccinated is False
+    assert person.infection is None
     pass
 
 
@@ -76,7 +79,10 @@ def test_sick_person_instantiation():
     person = Person(3, False, virus)
     # TODO: complete your own assert statements that test
     # the values at each attribute
-    # assert ...
+    assert person._id == 3
+    assert person.is_alive is True
+    assert person.is_vaccinated is False
+    assert person.infection is virus
     pass
 
 
@@ -93,10 +99,14 @@ def test_did_survive_infection():
         assert person.is_alive is True
         # TODO: Write your own assert statements that test
         # the values of each attribute for a Person who survived
-        # assert ...
+        assert person._id == 4
+        assert person.is_vaccinated is True
+        assert person.infection is None
     else:
         assert person.is_alive is False
         # TODO: Write your own assert statements that test
         # the values of each attribute for a Person who did not survive
-        # assert ...
+        assert person._id == 4
+        assert person.is_vaccinated is False
+        assert person.infection is virus
         pass
