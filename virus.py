@@ -6,6 +6,11 @@ class Virus(object):
         self.repro_rate = repro_rate
         self.mortality_rate = mortality_rate
 
+    def user_virus():
+        self.name = input("What is the name of the disease?")
+        self.repro_rate = input("What is the reproduction rate of the disease?")
+        self.mortality_rate = input("What is the mortality rate of the disease?")
+        Virus = [self.name, self.repro_rate, self.mortality_rate]
 
 def test_virus_instantiation():
     #TODO: Create your own test that models the virus you are working with
