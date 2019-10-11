@@ -1,0 +1,8 @@
+What were the inputs you gave the simulation? (Population size, percent vaccinated, virus name, mortality rate, reproductive rate)
+Population size = 4000, Percent vaccinated = .05, Virus name = Bubonic Plague, Mortality rate = .6, Reproductive rate = .05
+What percentage of the population became infected at some point before the virus burned out?
+3790 = 95%
+What percentage of the population died from the virus?
+2313 = 58%
+Out of all interactions sick individuals had during the entire simulation, how many total interactions did we see where a vaccination saved a person from potentially becoming infected?
+1521 times

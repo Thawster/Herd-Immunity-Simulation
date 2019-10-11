@@ -2,10 +2,8 @@ class Logger(object):
     ''' Utility class responsible for logging all interactions during the simulation. '''
     # TODO: Write a test suite for this class to make sure each method is working
     # as expected.
-
     # PROTIP: Write your tests before you solve each function, that way you can
     # test them one by one as you write your class.
-
     def __init__(self, file_name):
         # TODO:  Finish this initialization method. The file_name passed should be the
         # full file name of the file that the logs will be written to.
@@ -24,13 +22,9 @@ class Logger(object):
         # NOTE: Make sure to end every line with a '/n' character to ensure that each
         # event logged ends up on a separate line!
         with open(self.file_name, 'a') as log_file:
-        log_file.write("Population size: {} \n".format(pop_size))
-        log_file.write("Vaccination percentage: {} \n".format(vacc_percentage))
-        log_file.write("Virus name: {} \n".format(virus_name))
-        log_file.write("Mortality rate: {} \n".format(mortality_rate))
-        log_file.write("Basic reproduction num: {} \n".format(basic_repro_num))
-        log_file.write("\n")
-        log_file.close()
+            message = "Population size: {}  Vaccination percentage: {}  Virus name: {}  Mortality rate: {}  Basic reproduction num: {}\n".format(pop_size, vacc_percentage, virus_name, mortality_rate, basic_repro_num)
+            log_file.write(message)
+            log_file.close()
 
 
     def log_interaction(self, person, random_person, random_person_sick=None,
@@ -38,9 +32,7 @@ class Logger(object):
         '''
         The Simulation object should use this method to log every interaction
         a sick person has during each time step.
-
         The format of the log should be: "{person.ID} infects {random_person.ID} \n"
-
         or the other edge cases:
             "{person.ID} didn't infect {random_person.ID} because {'vaccinated' or 'already sick'} \n"
         '''
@@ -51,38 +43,36 @@ class Logger(object):
 
         with open(self.file_name, 'a') as log_file:
 
-        log_interaction = open("log_interaction.txt","w+")
-        if did_infect:
-            if ((person.infection is not None) and (random_person_sick)):
-                log_file.write('{} did infect {} because both already sick'.format(person._id, random_person._id))
-            elif person.infection:
-                log_file.write('{} did infect {} because already sick'.format(person._id, random_person._id))
-            elif random_person.infection:
-                log_file.write('{} did infect {} because already sick'.format(random_person._id, person._id))
-            else:
-                log_file.write('{} did infect {} '.format(person._id, random_person._id))
+            message = ""
+            if did_infect:
 
-        else:
-            if person.is_vaccinated and random_person_vacc:
-                log_file.write('{} did not infect {} because are both vaccinated'.format(person._id, random_person._id))
-            elif person.is_vaccinated:
-                log_file.write('{} did not infect {} because vaccinated'.format(person._id, random_person._id))
-            elif random_person_vacc:
-                log_file.write('{} did not infect {} because vaccinated'.format(random_person._id, person._id))
-            else:
-                log_file.write('{} did not infect {}'.format(random_person._id, person._id))
-
+                if ((person.infection is not None) and (random_person_sick)):
+                    message = f"{person._id} didn't infect {random_person._id} because already sick"
+                elif person.infection:
+                    message = f"{person._id} didn't infect {random_person._id} because already sick"
+                elif random_person.infection:
+                    message = f"{random_person._id} didn't infect {person._id} because already sick"
+                else:
+                    if person.is_vaccinated and random_person_vacc:
+                        message = f'{random_person._id} did not infect {person._id} because are both vaccinated'
+                    elif person.is_vaccinated:
+                        message = f'{random_person._id} did not infect {person._id} because vaccinated'
+                    elif random_person_vacc:
+                        message = f'{person._id} did not infect {random_person._id} because vaccinated'
+                    else:
+                        message = f'{random_person._id} did not infect {person._id}'
+            log_file.write(message)
+            log_file.close()
     def log_infection_survival(self, person, did_die_from_infection):
         ''' The Simulation object uses this method to log the results of every
         call of a Person object's .resolve_infection() method.
-
         The format of the log should be:
             "{person.ID} died from infection\n" or "{person.ID} survived infection.\n"
         '''
         # TODO: Finish this method. If the person survives, did_die_from_infection
         # should be False.  Otherwise, did_die_from_infection should be True.
         # Append the results of the infection to the logfile
-         with open(self.file_name, 'a') as f:
+        with open(self.file_name, 'a') as f:
             if not did_die_from_infection:
                 msg = f"{person._id} survived infection.\n"
                 f.write(msg)
@@ -92,16 +82,13 @@ class Logger(object):
 
     def log_time_step(self, time_step_number):
         ''' STRETCH CHALLENGE DETAILS:
-
         If you choose to extend this method, the format of the summary statistics logged
         are up to you.
-
         At minimum, it should contain:
             The number of people that were infected during this specific time step.
             The number of people that died on this specific time step.
             The total number of people infected in the population, including the newly infected
             The total number of dead, including those that died during this time step.
-
         The format of this log should be:
             "Time step {time_step_number} ended, beginning {time_step_number + 1}\n"
         '''

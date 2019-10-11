@@ -1,9 +1,9 @@
-import random, sys
-random.seed(42)
+import random
+import sys
 from person import Person
 from logger import Logger
 from virus import Virus
-
+random.seed(42)
 
 class Simulation(object):
     ''' Main class that will run the herd immunity simulation program.
@@ -39,22 +39,21 @@ class Simulation(object):
 
         self.population = [] # List of Person objects
         self.pop_size = pop_size # Int
-        self.next_person_id = 0 # Int
+        self.next_person_id = pop_size # Int
         self.virus = virus # Virus object
         self.initial_infected = initial_infected # Int
         self.total_infected = 0 # Int
         self.current_infected = 0 # Int
         self.vacc_percentage = vacc_percentage # float between 0 and 1
         self.total_dead = 0 # Int
-        self.file_name = "{}_simulation_pop_{}_vp_{}_infected_{}.txt".format(
-            virus_name, population_size, vacc_percentage, initial_infected)
+        self.file_name = "{}_simulation_pop_{}_vp_{}_infected_{}.txt".format(self.virus.name, self.pop_size, self.vacc_percentage, self.initial_infected)
         self.logger = Logger(self.file_name)
         self.newly_infected = []
         self.population = self._create_population(initial_infected)
         self.logger.write_metadata(self.pop_size, self.vacc_percentage, self.virus.name,
         self.virus.mortality_rate,self.virus.repro_rate)
 
-    def get_infected():
+    def get_infected(self):
         alive_infected = list()
         for person in self.population:
             if person.infection and person.is_alive:
@@ -116,10 +115,10 @@ class Simulation(object):
                 bool: True for simulation should continue, False if it should end.
         '''
         # TODO: Complete this helper method.  Returns a Boolean.
-        if self.total_dead == self.population or self.vacc_percentage == 1.0:
-            return False
-        else:
+        if self.total_dead == self.population or self.vacc_percentage == 1.0 or self.current_infected <= 0:
             return True
+        else:
+            return False
 
     def run(self):
         ''' This method should run the simulation until all requirements for ending
@@ -154,19 +153,19 @@ class Simulation(object):
                 if person not in vaccinated and person.infection:
                     uninfected.append(person)
             print(f"Time step: {time_step_counter}, " +
-                  f"total infected: {self.total_infected}, " +
-                  f"current infected: {self.current_infected} vaccinated %: " +
-                  f"{self.vacc_percentage}, dead: {self.total_dead},  " +
-                  f"total vaccinated: {len(vaccinated)}, " +
-                  f"alive: {len(alive)}, uninfected: {len(uninfected)}")
+                f"total infected: {self.total_infected}, " +
+                f"current infected: {self.current_infected} vaccinated %: " +
+                f"{self.vacc_percentage}, dead: {self.total_dead},  " +
+                f"total vaccinated: {len(vaccinated)}, " +
+                f"alive: {len(alive)}, uninfected: {len(uninfected)}")
             if self._simulation_should_continue():
                 break
             time_step_counter += 1
         # TODO: for every iteration of this loop, call self.time_step() to compute another
         # round of this simulation.
-        print('The simulation has ended after {time_step_counter} turns.'.format(time_step_counter))
+        print('The simulation has ended after {} turns.'.format(time_step_counter))
 
-    def time_step(self):
+    def time_step(self, time_step_counter):
         ''' This method should contain all the logic for computing one time step
         in the simulation.
 
@@ -187,7 +186,7 @@ class Simulation(object):
                     self.interaction(person, random_person)
         dead_this_step = self.kill_or_vaccinate()
         infected_this_step = self._infect_newly_infected()
-        self.logger.log_time_step(time_step_counter, infected_this_step, dead_this_step, self.total_infected, self.total_dead)
+        self.logger.log_time_step(time_step_counter)
 
     def interaction(self, person, random_person):
         '''This method should be called any time two living people are selected for an
@@ -272,18 +271,18 @@ class Simulation(object):
 if __name__ == "__main__":
     params = sys.argv[1:]
 
-    pop_size = int(params[3])
-    vacc_percentage = float(params[4])
-    virus_name = str(params[0])
-    repro_num = float(params[1])
-    mortality_rate = float(params[2])
+    pop_size = int(params[0])
+    vacc_percentage = float(params[1])
+    virus_name = str(params[2])
+    repro_rate = float(params[3])
+    mortality_rate = float(params[4])
 
     if len(params) == 6:
         initial_infected = int(params[5])
     else:
         initial_infected = 1
 
-    virus = Virus(name, repro_rate, mortality_rate)
-    sim = Simulation(pop_size, vacc_percentage, initial_infected, virus)
+    virus = Virus(virus_name, repro_rate, mortality_rate)
+    sim = Simulation(pop_size, vacc_percentage, virus, initial_infected)
 
     sim.run()
