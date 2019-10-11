@@ -21,13 +21,14 @@ class Logger(object):
         # NOTE: Make sure to end every line with a '/n' character to ensure that each
         # event logged ends up on a separate line!
         with open(self.file_name, 'a') as log_file:
-        log_file.write("Population size: {} \n".format(pop_size))
-        log_file.write("Vaccination percentage: {} \n".format(vacc_percentage))
-        log_file.write("Virus name: {} \n".format(virus_name))
-        log_file.write("Mortality rate: {} \n".format(mortality_rate))
-        log_file.write("Basic reproduction num: {} \n".format(basic_repro_num))
-        log_file.write("\n")
-        log_file.close()
+            log_file.write("Population size: {} \n".format(pop_size))
+            log_file.write("Vaccination percentage: {} \n".format(vacc_percentage))
+            log_file.write("Virus name: {} \n".format(virus_name))
+            log_file.write("Mortality rate: {} \n".format(mortality_rate))
+            log_file.write("Basic reproduction num: {} \n".format(basic_repro_num))
+            log_file.write("\n")
+            log_file.close()
+
     def log_interaction(self, person, random_person, random_person_sick=None,
                         random_person_vacc=None, did_infect=None):
         '''
@@ -42,25 +43,25 @@ class Logger(object):
         # along with whether they are sick or vaccinated when they interact to determine
         # exactly what happened in the interaction and create a String, and write to your logfile.
         with open(self.file_name, 'a') as log_file:
-        log_interaction = open("log_interaction.txt","w+")
-        if did_infect:
-            if ((person.infection is not None) and (random_person_sick)):
-                log_file.write('{} did infect {} because both already sick'.format(person._id, random_person._id))
-            elif person.infection:
-                log_file.write('{} did infect {} because already sick'.format(person._id, random_person._id))
-            elif random_person.infection:
-                log_file.write('{} did infect {} because already sick'.format(random_person._id, person._id))
+            log_interaction = open("log_interaction.txt","w+")
+            if did_infect:
+                if ((person.infection is not None) and (random_person_sick)):
+                    log_file.write('{} did infect {} because both already sick'.format(person._id, random_person._id))
+                elif person.infection:
+                    log_file.write('{} did infect {} because already sick'.format(person._id, random_person._id))
+                elif random_person.infection:
+                    log_file.write('{} did infect {} because already sick'.format(random_person._id, person._id))
+                else:
+                    log_file.write('{} did infect {} '.format(person._id, random_person._id))
             else:
-                log_file.write('{} did infect {} '.format(person._id, random_person._id))
-        else:
-            if person.is_vaccinated and random_person_vacc:
-                log_file.write('{} did not infect {} because are both vaccinated'.format(person._id, random_person._id))
-            elif person.is_vaccinated:
-                log_file.write('{} did not infect {} because vaccinated'.format(person._id, random_person._id))
-            elif random_person_vacc:
-                log_file.write('{} did not infect {} because vaccinated'.format(random_person._id, person._id))
-            else:
-                log_file.write('{} did not infect {}'.format(random_person._id, person._id))
+                if person.is_vaccinated and random_person_vacc:
+                    log_file.write('{} did not infect {} because are both vaccinated'.format(person._id, random_person._id))
+                elif person.is_vaccinated:
+                    log_file.write('{} did not infect {} because vaccinated'.format(person._id, random_person._id))
+                elif random_person_vacc:
+                    log_file.write('{} did not infect {} because vaccinated'.format(random_person._id, person._id))
+                else:
+                    log_file.write('{} did not infect {}'.format(random_person._id, person._id))
     def log_infection_survival(self, person, did_die_from_infection):
         ''' The Simulation object uses this method to log the results of every
         call of a Person object's .resolve_infection() method.
@@ -70,7 +71,7 @@ class Logger(object):
         # TODO: Finish this method. If the person survives, did_die_from_infection
         # should be False.  Otherwise, did_die_from_infection should be True.
         # Append the results of the infection to the logfile
-         with open(self.file_name, 'a') as f:
+        with open(self.file_name, 'a') as f:
             if not did_die_from_infection:
                 msg = f"{person._id} survived infection.\n"
                 f.write(msg)
