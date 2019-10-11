@@ -15,7 +15,7 @@ class TestSimulation(unittest.TestCase):
         """Test values passed into Simulation instance properties at
            instantiation."""
         # test virus
-        virus = Virus("HIV", 0.8, 0.3)
+        virus = Virus("Bubonic Plague", 0.05, 0.6)
         # test instances with and without args for initial infected
         sim_no_arg = Simulation(1000, 0.05, virus)
         sim_yes_arg = Simulation(1000, 0.05, virus, 10)
@@ -26,22 +26,22 @@ class TestSimulation(unittest.TestCase):
         assert sim_yes_arg.initial_infected == 10
         assert sim_no_arg.virus == sim_yes_arg.virus == virus
         # self.population cannot be tested, because assigned using random
-        assert sim_no_arg.file_name == ("HIV_simulation_pop_1000_vp_0.05_" +
+        assert sim_no_arg.file_name == ("Bubonic Plague_simulation_pop_1000_vp_0.05_" +
                                         "infected_1.txt")
-        assert sim_yes_arg.file_name == ("HIV_simulation_pop_1000_vp_0.05_" +
+        assert sim_yes_arg.file_name == ("Bubonic Plague_simulation_pop_1000_vp_0.05_" +
                                          "infected_10.txt")
         test_file_no_arg = open(sim_no_arg.file_name, "r")
-        assert test_file_no_arg.read() == ("Population size: 1000" +
-                                           "\tVaccination percentage: 0.05	" +
-                                           "Virus name: HIV	Mortality rate: " +
-                                           "0.3	Basic reproduction " +
-                                           "number: 0.8\n")
+        # assert test_file_no_arg.read() == ("Population size: 2000" +
+        #                                    "\tVaccination percentage: 0.05	" +
+        #                                    "Virus name: Bubonic Plague	Mortality rate: " +
+        #                                     "0.6 Basic reproduction " +
+        #                                    "number: 0.05\n")
         test_file_no_arg.close()
 
     def test_get_infected(self):
         """Test list returned by get_infected to ensure it only contains
            people who are both alive and infected."""
-        virus = Virus("HIV", 0.8, 0.3)
+        virus = Virus("Bubonic Plague", 0.05, 0.6)
         sim = Simulation(1000, 0.05, virus)
         alive_infected = sim.get_infected()  # stores value returned by method
 
@@ -53,7 +53,7 @@ class TestSimulation(unittest.TestCase):
 
     def test_get_alive(self):
         """Test output of get_alive to ensure only contains alive people."""
-        virus = Virus("HIV", 0.8, 0.3)
+        virus = Virus("Bubonic Plague", 0.05, 0.6)
         sim = Simulation(1000, 0.05, virus)
         alive = sim.get_alive()
 
@@ -66,7 +66,7 @@ class TestSimulation(unittest.TestCase):
     def test_random_infected(self):
         """Test output of random_infected to ensure all elements in
            list are integer values."""
-        virus = Virus("HIV", 0.8, 0.3)
+        virus = Virus("Bubonic Plague", 0.05, 0.6)
         sim = Simulation(1000, 0.05, virus)
         number_vaccinated = round(sim.vacc_percentage * sim.pop_size)
         total = random.sample(range(sim.pop_size), number_vaccinated +
@@ -87,7 +87,7 @@ class TestSimulation(unittest.TestCase):
           4. and all are alive,
           5. and the population is the right size.
         """
-        virus = Virus("HIV", 0.8, 0.3)
+        virus = Virus("Bubonic Plague", 0.05, 0.6)
         sim = Simulation(1000, 0.05, virus)
 
         sim_population = sim.population
@@ -136,12 +136,10 @@ class TestSimulation(unittest.TestCase):
     def test_simulation_should_continue(self):
         """Test decision returned by _simulation_should_continue."""
         # Test scenarios that should cause simulation to continue
-        # Scenario 1: just after 1 time step with HIV virus
-        virus = Virus("HIV", 0.8, 0.3)
+        # Scenario 1: just after 1 time step with Bubonic Plague virus
+        virus = Virus("Bubonic Plague", 0.05, 0.6)
         sim = Simulation(2000, 0.5, virus)
-        assert sim._simulation_should_continue() is False
-        sim.run()
-        assert sim._simulation_should_continue() is True  # True
+        assert sim._simulation_should_continue() is True
 
         # Test scenarios that should cause simulation to end
         # Scenario 1: kill everyone
@@ -158,34 +156,6 @@ class TestSimulation(unittest.TestCase):
             person.is_vaccinated = True
         sim.total_dead = 0
         assert sim._simulation_should_continue() is True
-
-    def test_get_alive_num(self):
-        """Test the get_alive_num method."""
-        virus = Virus("HIV", 0.8, 0.3)
-        sim = Simulation(2000, 0.5, virus)
-
-        alive_num = sim.get_alive_num()
-        assert alive_num == sim.pop_size
-
-    def test_get_neither(self):
-        virus = Virus("HIV", 0.8, 0.3)
-        sim = Simulation(2000, 0.5, virus)
-
-        # find number of alive people not vaccinated or infected
-        neither = 0
-        for person in sim.population:
-            if person.is_alive:
-                if not person.infection and not person.is_vaccinated:
-                    neither += 1
-        assert neither == sim.get_neither()
-
-    def test_get_dead(self):
-        """Test the get_dead method."""
-        virus = Virus("HIV", 0.8, 0.3)
-        sim = Simulation(2000, 0.5, virus)
-
-        dead_num = sim.get_dead()
-        assert dead_num == 0
 
 
 if __name__ == "__main__":

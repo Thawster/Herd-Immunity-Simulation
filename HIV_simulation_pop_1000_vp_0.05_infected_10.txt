@@ -1,0 +1,6 @@
+Population size: 1000 
+Vaccination percentage: 0.05 
+Virus name: HIV 
+Mortality rate: 0.3 
+Basic reproduction num: 0.8 
+
