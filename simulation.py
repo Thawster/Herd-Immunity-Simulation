@@ -36,7 +36,7 @@ class Simulation(object):
         # TODO: Store each newly infected person's ID in newly_infected attribute.
         # At the end of each time step, call self._infect_newly_infected()
         # and then reset .newly_infected back to an empty list.
-        
+
         self.population = [] # List of Person objects
         self.pop_size = pop_size # Int
         self.next_person_id = 0 # Int
@@ -228,7 +228,7 @@ class Simulation(object):
             #     Simulation object's newly_infected array, so that their .infected
             #     attribute can be changed to True at the end of the time step.
         # TODO: Call slogger method during this method.
-    
+
 
     def kill_or_vaccinate(self):
         infected_ids = list()
@@ -271,7 +271,7 @@ class Simulation(object):
 
 if __name__ == "__main__":
     params = sys.argv[1:]
-    
+
     pop_size = int(params[3])
     vacc_percentage = float(params[4])
     virus_name = str(params[0])
