@@ -23,7 +23,7 @@ class Logger(object):
         # the 'a' mode to append a new log to the end, since 'w' overwrites the file.
         # NOTE: Make sure to end every line with a '/n' character to ensure that each
         # event logged ends up on a separate line!
-        log_file = open(self.file_name,"w+")
+        with open(self.file_name, 'a') as log_file:
         log_file.write("Population size: {} \n".format(pop_size))
         log_file.write("Vaccination percentage: {} \n".format(vacc_percentage))
         log_file.write("Virus name: {} \n".format(virus_name))
@@ -48,9 +48,8 @@ class Logger(object):
         # represent all the possible edge cases. Use the values passed along with each person,
         # along with whether they are sick or vaccinated when they interact to determine
         # exactly what happened in the interaction and create a String, and write to your logfile.
-        log_file = open(self.file_name,"w+")
 
-
+        with open(self.file_name, 'a') as log_file:
 
         log_interaction = open("log_interaction.txt","w+")
         if did_infect:
@@ -83,7 +82,13 @@ class Logger(object):
         # TODO: Finish this method. If the person survives, did_die_from_infection
         # should be False.  Otherwise, did_die_from_infection should be True.
         # Append the results of the infection to the logfile
-        pass
+         with open(self.file_name, 'a') as f:
+            if not did_die_from_infection:
+                msg = f"{person._id} survived infection.\n"
+                f.write(msg)
+            elif did_die_from_infection:
+                msg = f"{person._id} died from infection.\n"
+                f.write(msg)
 
     def log_time_step(self, time_step_number):
         ''' STRETCH CHALLENGE DETAILS:
@@ -103,4 +108,6 @@ class Logger(object):
         # TODO: Finish this method. This method should log when a time step ends, and a
         # new one begins.
         # NOTE: Here is an opportunity for a stretch challenge!
-        pass
+        with open(self.file_name, 'a') as f:
+            msg = f"Time step {time_step_number} ended, beginning {time_step_number + 1}\n"
+            f.write(msg)
