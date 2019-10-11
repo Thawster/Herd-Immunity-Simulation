@@ -1,9 +1,9 @@
-import random, sys
-random.seed(42)
+import random
+import sys
 from person import Person
 from logger import Logger
 from virus import Virus
-
+random.seed(42)
 
 class Simulation(object):
     ''' Main class that will run the herd immunity simulation program.
@@ -36,18 +36,17 @@ class Simulation(object):
         # TODO: Store each newly infected person's ID in newly_infected attribute.
         # At the end of each time step, call self._infect_newly_infected()
         # and then reset .newly_infected back to an empty list.
-        
+
         self.population = [] # List of Person objects
         self.pop_size = pop_size # Int
-        self.next_person_id = 0 # Int
+        self.next_person_id = pop_size # Int
         self.virus = virus # Virus object
         self.initial_infected = initial_infected # Int
         self.total_infected = 0 # Int
         self.current_infected = 0 # Int
         self.vacc_percentage = vacc_percentage # float between 0 and 1
         self.total_dead = 0 # Int
-        self.file_name = "{}_simulation_pop_{}_vp_{}_infected_{}.txt".format(
-            virus_name, population_size, vacc_percentage, initial_infected)
+        self.file_name = "{}_simulation_pop_{}_vp_{}_infected_{}.txt".format(self.virus.name, self.pop_size, self.vacc_percentage, self.initial_infected)
         self.logger = Logger(self.file_name)
         self.newly_infected = []
         self.population = self._create_population(initial_infected)
@@ -166,7 +165,7 @@ class Simulation(object):
         # round of this simulation.
         print('The simulation has ended after {time_step_counter} turns.'.format(time_step_counter))
 
-    def time_step(self):
+    def time_step(self, time_step_counter):
         ''' This method should contain all the logic for computing one time step
         in the simulation.
 
@@ -228,7 +227,7 @@ class Simulation(object):
             #     Simulation object's newly_infected array, so that their .infected
             #     attribute can be changed to True at the end of the time step.
         # TODO: Call slogger method during this method.
-    
+
 
     def kill_or_vaccinate(self):
         infected_ids = list()
@@ -271,19 +270,19 @@ class Simulation(object):
 
 if __name__ == "__main__":
     params = sys.argv[1:]
-    
-    pop_size = int(params[3])
-    vacc_percentage = float(params[4])
-    virus_name = str(params[0])
-    repro_num = float(params[1])
-    mortality_rate = float(params[2])
+
+    pop_size = int(params[0])
+    vacc_percentage = float(params[1])
+    virus_name = str(params[2])
+    repro_rate = float(params[3])
+    mortality_rate = float(params[4])
 
     if len(params) == 6:
         initial_infected = int(params[5])
     else:
         initial_infected = 1
 
-    virus = Virus(name, repro_rate, mortality_rate)
-    sim = Simulation(pop_size, vacc_percentage, initial_infected, virus)
+    virus = Virus(virus_name, repro_rate, mortality_rate)
+    sim = Simulation(pop_size, vacc_percentage, virus, initial_infected)
 
     sim.run()

@@ -37,4 +37,3 @@ class Person(object):
             self.is_vaccinated = True
             self.infection = None
         return self.is_alive
-        # Only called if infection attribute is not None.
